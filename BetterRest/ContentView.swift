@@ -13,13 +13,8 @@ struct ContentView: View {
     @State private var sleepAmount = 8.0
     @State private var coffeeAmount = 1
     
-    @State private var alertTitle = ""
-    @State private var alertMessage = ""
-    @State private var showingAlert = false
-    
     private var bedTime: Date {
-        let time = calculateSleep()
-        return time ?? Date.now
+        calculateSleep()
     }
     
     private static var defaultWakeTime: Date {
@@ -50,7 +45,7 @@ struct ContentView: View {
                 Section {
                     Picker("Pick the number of coffee cups", selection: $coffeeAmount) {
                         ForEach(1..<21) { num in
-                            Text(num == 1 ? "1 cup" : "\(num) cups")
+                            Text("^[\(num) cup](inflect: true)")
                                 .tag(num)
                         }
                     }
@@ -62,7 +57,7 @@ struct ContentView: View {
                 
                 Section {
                     Text(bedTime.formatted(date: .omitted, time: .shortened))
-                        .font(.largeTitle)
+                        .font(.headline)
                         .frame(maxWidth: .infinity)
                 } header: {
                     Text("Bedtime")
@@ -72,7 +67,7 @@ struct ContentView: View {
         }
     }
     
-    func calculateSleep() -> Date? {
+    func calculateSleep() -> Date {
         do {
             let config = MLModelConfiguration()
             let model = try SleepCalculator(configuration: config)
@@ -88,7 +83,7 @@ struct ContentView: View {
             
             return sleepTime
         } catch {
-            return nil
+            fatalError("Failed to predict bedtime.")
         }
     }
 }
