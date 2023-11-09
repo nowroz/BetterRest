@@ -22,14 +22,14 @@ struct ContentView: View {
                 }
                 
                 Section("Daily coffee intake?") {
-                    Stepper("^[\(calculator.coffeeAmount) cup](inflect: true)", value: $calculator.coffeeAmount, in: 1...12)
+                    Stepper("^[\(calculator.coffeeAmount) cup](inflect: true)", value: $calculator.coffeeAmount, in: 1...20)
                         .foregroundStyle(calculator.coffeeAmount > 4 ? .red : .primary)
                 }
                 
                 Section("Estimated Bedtime") {
                     Text(calculator.bedtime.formatted(date: .omitted, time: .shortened))
                         .frame(maxWidth: .infinity)
-                        .font(.title.bold())
+                        .font(.title.weight(.heavy))
                         .foregroundStyle(.secondary)
                 }
             }
